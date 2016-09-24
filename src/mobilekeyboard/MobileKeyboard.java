@@ -3,16 +3,14 @@ package mobilekeyboard;
 import javax.swing.*;        
 import java.awt.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 import java.awt.BorderLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class MobileKeyboard {
 	private TextHistory history;
-	public MobileKeyboard(){
-		history = new TextHistory();
-	}
-
+	
     private void createAndShowUI() {
         final JFrame frame = new JFrame("VirtualKeyboard");
         frame.setSize(600,600);
@@ -33,19 +31,43 @@ public class MobileKeyboard {
         JPanel results = new JPanel();
         JLabel headerLabel = new JLabel("Input");
         results.setLayout(new GridLayout(0, 5));
+        history = new TextHistory();
         
         historyText.setEditable(false);
 
         input.getDocument().addDocumentListener(new DocumentListener() {
-
             @Override
             public void insertUpdate(DocumentEvent de) {
-            	historyText.setText(input.getText());
+            	String in = input.getText().toLowerCase();
+            	String[] words= in.split("[^a-z']+");
+
+            	if (in.length()!=0 && in.charAt(in.length()-1)>='a' && in.charAt(in.length()-1)<='z'){//make sure we start on an alpha
+            		LinkedList<TextCount> suggestions;
+            		System.out.println("Look for: "+words[words.length-1]);
+            		suggestions = history.autocomplete(words[words.length-1]);
+            		if (suggestions!=null){
+            			results.removeAll();
+            			for (TextCount t:suggestions){
+            				System.out.println("I SUGGEST:" +t.toString());
+                        	//historyText.setText(input.getText());
+            				results.add(new JLabel(t.toString(),JLabel.CENTER));
+            			}
+            			frame.pack();
+            			results.revalidate(); 
+            			results.repaint();
+            		}
+            	}
+            	else{//No suggestions - remove old suggestions
+            		results.removeAll();
+            		frame.pack();
+        			results.revalidate(); 
+        			results.repaint();
+            	}
             }
 
             @Override
             public void removeUpdate(DocumentEvent de) {
-            	historyText.setText(input.getText());
+            	insertUpdate(de);
             }
 
             @Override
@@ -54,16 +76,29 @@ public class MobileKeyboard {
             	
             }
         });
+        
+        input.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	  {
+        	   //submit pressed
+        		historyText.setText(historyText.getText()+input.getText()+"\n");
+        		history.addInput(input.getText());
+        		input.setText("");
+        	  }
+        });
 
         submit.addActionListener(new ActionListener()
         {
         	public void actionPerformed(ActionEvent e)
         	  {
         	   //submit pressed
-        		
+        		historyText.setText(historyText.getText()+input.getText()+"\n");
+        		history.addInput(input.getText());
+        		input.setText("");
         	  }
         });
-        
+        		
         frame.getContentPane().add(topPanel, BorderLayout.NORTH);
         topPanel.add(headerLabel, BorderLayout.WEST);
         topPanel.add(input, BorderLayout.CENTER);

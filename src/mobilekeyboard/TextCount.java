@@ -25,5 +25,8 @@ public class TextCount {
 		   return -1;
 	   }
 	   return 0;
-	} 
+	}
+	public String toString(){
+		return word + " ("+occurance+")";
+	}
 }
