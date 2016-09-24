@@ -17,7 +17,7 @@ public class TextHistory {
 	}
 	//Top level method. Parse input string. Add each word to the history
 	public void addInput(String input){
-		String[] words= input.split("[^a-zA-Z']+");
+		String[] words = input.split("[^a-zA-Z']+");
 		for (int i = 0; i<words.length; i++){
 			this.addWord(words[i]);
 		}
@@ -72,20 +72,41 @@ public class TextHistory {
 			for (int a = 0; a<t.table.length; a++){
 				if (t.table[a] != null){//there is a value/deeper value
 					if(t.table[a].value!=null){
-						p.add(t.table[a].value); 
+						insert(t.table[a].value,p); 
 						System.out.println(t.table[a].value.toString());
 					}
-					//Do an insertion sort *Change to insertion add
-//					for (int i = 1; i <p.size(); i++){
-//						    TextCount x = p.get(i);
-//						    int j = i - 1;
-//						    while( j >= 0 && p.get(j).compareTo(x) > 0){
-//						        p.set(j+1, p.get(j));
-//						        j = j - 1;
-//						    }
-//						    p.set(j+1,x);
-//					}
 					getValues(t.table[a],p);
+				}
+			}
+		}
+	}
+	
+	private void insert(TextCount t,LinkedList<TextCount> p){
+		//binary insert for correct spot to add
+		if (p.size() == 0){
+		     p.add(0,t);
+		     return;
+		}
+		int l = 0;
+		int r = p.size() - 1;
+		int m = 0;
+		while (true) {
+			m = (r + l) / 2;
+			if (p.get(m).compareTo(t) == 0) {
+				 p.add(m,t);
+				 return;
+				 
+			} else if (p.get(m).compareTo(t) > 0) {
+				l = m + 1; // its in the upper
+				if (l > r){
+					 p.add(m+1,t);
+					 return;
+				}
+			} else {
+				r = m - 1; // its in the lower
+				if (l > r){
+					p.add(m,t);
+					return;
 				}
 			}
 		}
