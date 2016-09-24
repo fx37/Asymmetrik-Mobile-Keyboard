@@ -10,7 +10,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class MobileKeyboard {
-	private TextHistory history;
+	private AutocompleteProvider history;
 	
     private void createAndShowUI() {
         final JFrame frame = new JFrame("VirtualKeyboard");
@@ -32,7 +32,7 @@ public class MobileKeyboard {
         JPanel results = new JPanel();
         JLabel headerLabel = new JLabel("Input");
         results.setLayout(new GridLayout(0, 5));
-        history = new TextHistory();
+        history = new AutocompleteProvider();
         
         historyText.setEditable(false);
 
@@ -43,9 +43,9 @@ public class MobileKeyboard {
             	String[] words= in.split("[^a-z']+");
 
             	if (in.length()!=0 && in.charAt(in.length()-1)>='a' && in.charAt(in.length()-1)<='z'){//make sure we start on an alpha
-            		PriorityQueue<TextCount> suggestions;
+            		PriorityQueue<Canidate> suggestions;
             		//System.out.println("Look for: "+words[words.length-1]);
-            		suggestions = history.autocomplete(words[words.length-1]);
+            		suggestions = history.getWords(words[words.length-1]);
             		if (suggestions!=null){
             			results.removeAll();
             			while(suggestions.size()!=0){
@@ -78,24 +78,24 @@ public class MobileKeyboard {
             }
         });
         
+        //When Enter is pressed
         input.addActionListener(new ActionListener()
         {
         	public void actionPerformed(ActionEvent e)
         	  {
-        	   //submit pressed
         		historyText.setText(historyText.getText()+input.getText()+"\n");
-        		history.addInput(input.getText());
+        		history.train(input.getText());
         		input.setText("");
         	  }
         });
 
+        //Submit pressed
         submit.addActionListener(new ActionListener()
         {
         	public void actionPerformed(ActionEvent e)
         	  {
-        	   //submit pressed
         		historyText.setText(historyText.getText()+input.getText()+"\n");
-        		history.addInput(input.getText());
+        		history.train(input.getText());
         		input.setText("");
         	  }
         });
@@ -107,6 +107,7 @@ public class MobileKeyboard {
         frame.getContentPane().add(results, BorderLayout.CENTER);
         frame.getContentPane().add(historyText, BorderLayout.SOUTH);
     }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
