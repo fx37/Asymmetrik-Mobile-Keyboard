@@ -1,6 +1,7 @@
 package mobilekeyboard;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 public class TextHistory {
 	private TextCount value;
@@ -49,8 +50,9 @@ public class TextHistory {
 		}
 	}
 	//Top level method. Find autocompleted choices
-	public LinkedList<TextCount> autocomplete(String piece){
-		LinkedList<TextCount> possibilites = new LinkedList<TextCount>();
+	public PriorityQueue<TextCount> autocomplete(String piece){
+		PriorityQueue<TextCount> possibilites = 
+	            new PriorityQueue<TextCount>();
 		TextHistory iterator = this;
 		for (int a=0; a<piece.length(); a++){
 			int letter = piece.charAt(a)-97;//Get the letter number
@@ -67,46 +69,15 @@ public class TextHistory {
 		return possibilites;
 	}
 	//traverse and add the possibilities to the list
-	private void getValues(TextHistory t,LinkedList<TextCount> p){
+	private void getValues(TextHistory t,PriorityQueue<TextCount> p){
 		if (t!=null){
 			for (int a = 0; a<t.table.length; a++){
 				if (t.table[a] != null){//there is a value/deeper value
 					if(t.table[a].value!=null){
-						insert(t.table[a].value,p); 
-						System.out.println(t.table[a].value.toString());
+						p.add(t.table[a].value); 
+						//System.out.println(t.table[a].value.toString());
 					}
 					getValues(t.table[a],p);
-				}
-			}
-		}
-	}
-	
-	private void insert(TextCount t,LinkedList<TextCount> p){
-		//binary insert for correct spot to add
-		if (p.size() == 0){
-		     p.add(0,t);
-		     return;
-		}
-		int l = 0;
-		int r = p.size() - 1;
-		int m = 0;
-		while (true) {
-			m = (r + l) / 2;
-			if (p.get(m).compareTo(t) == 0) {
-				 p.add(m,t);
-				 return;
-				 
-			} else if (p.get(m).compareTo(t) > 0) {
-				l = m + 1; // its in the upper
-				if (l > r){
-					 p.add(m+1,t);
-					 return;
-				}
-			} else {
-				r = m - 1; // its in the lower
-				if (l > r){
-					p.add(m,t);
-					return;
 				}
 			}
 		}

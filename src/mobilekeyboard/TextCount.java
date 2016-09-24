@@ -1,6 +1,6 @@
 package mobilekeyboard;
 
-public class TextCount {
+public class TextCount implements Comparable{
 	private String word;
 	private int occurance;
 	public TextCount(String w){
@@ -16,12 +16,13 @@ public class TextCount {
 	public int occurance(){
 		return occurance;
 	}
-	public int compareTo(TextCount otherText) {
-	   // return this.id - otherStudent.id ; //result of this operation can overflow
-	   if (this.occurance>otherText.occurance){
+	@Override
+	public int compareTo(Object otherObject) {
+		TextCount otherText = (TextCount)otherObject;
+	   if (this.occurance< otherText.occurance){
 		   return 1;
 	   }
-	   else if (this.occurance<otherText.occurance){
+	   else if (this.occurance>otherText.occurance){
 		   return -1;
 	   }
 	   return 0;

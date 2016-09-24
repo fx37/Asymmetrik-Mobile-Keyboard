@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.awt.BorderLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -42,15 +43,15 @@ public class MobileKeyboard {
             	String[] words= in.split("[^a-z']+");
 
             	if (in.length()!=0 && in.charAt(in.length()-1)>='a' && in.charAt(in.length()-1)<='z'){//make sure we start on an alpha
-            		LinkedList<TextCount> suggestions;
-            		System.out.println("Look for: "+words[words.length-1]);
+            		PriorityQueue<TextCount> suggestions;
+            		//System.out.println("Look for: "+words[words.length-1]);
             		suggestions = history.autocomplete(words[words.length-1]);
             		if (suggestions!=null){
             			results.removeAll();
-            			for (TextCount t:suggestions){
-            				System.out.println("I SUGGEST:" +t.toString());
+            			while(suggestions.size()!=0){
+            				//System.out.println("I SUGGEST:" +t.toString());
                         	//historyText.setText(input.getText());
-            				results.add(new JLabel(t.toString(),JLabel.CENTER));
+            				results.add(new JLabel(suggestions.remove().toString(),JLabel.CENTER));
             			}
             			frame.pack();
             			results.revalidate(); 
