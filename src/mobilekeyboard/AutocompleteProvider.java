@@ -17,8 +17,8 @@ public class AutocompleteProvider {
 		value = new Canidate(word);
 	}
 	//Top level method. Parse input string. Add each word to the history
-	public void train(String input){
-		String[] words = input.split("[^a-zA-Z']+");
+	public void train(String passage){
+		String[] words = passage.split("[^a-zA-Z']+");
 		for (int i = 0; i<words.length; i++){
 			this.addWord(words[i]);
 		}
@@ -50,16 +50,16 @@ public class AutocompleteProvider {
 		}
 	}
 	//Top level method. Find autocompleted choices
-	public PriorityQueue<Canidate> getWords(String piece){
+	public PriorityQueue<Canidate> getWords(String fragment){
 		PriorityQueue<Canidate> possibilites = 
 	            new PriorityQueue<Canidate>();
 		AutocompleteProvider iterator = this;
-		for (int a=0; a<piece.length(); a++){
-			int letter = piece.charAt(a)-97;//Get the letter number
+		for (int a=0; a<fragment.length(); a++){
+			int letter = fragment.charAt(a)-97;//Get the letter number
 			if (iterator.table[letter]==null){//No auto complete suggestions. Return null
 				return null;
 			}
-			else if (a == piece.length()-1){//The last letter. Piece is done
+			else if (a == fragment.length()-1){//The last letter. Piece is done
 				getValues(iterator.table[letter],possibilites);
 			}
 			else {
