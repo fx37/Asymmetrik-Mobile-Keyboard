@@ -43,7 +43,7 @@ public class MobileKeyboard {
             	String[] words= in.split("[^a-z']+");
 
             	if (in.length()!=0 && in.charAt(in.length()-1)>='a' && in.charAt(in.length()-1)<='z'){//make sure we start on an alpha
-            		PriorityQueue<Canidate> suggestions;
+            		PriorityQueue<Candidate> suggestions;
             		//System.out.println("Look for: "+words[words.length-1]);
             		suggestions = history.getWords(words[words.length-1]);
             		if (suggestions!=null){

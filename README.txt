@@ -27,7 +27,7 @@ The program can be run through the jar file.
 java -jar MobileKeyboard.jar
 
 To compile and run the code yourself:
-1. Download the code off git
+1. Download the code: git clone https://github.com/fx37/Asymmetrik-Mobile-Keyboard.git
 2. Compile the code: javac *.java
 3. Run MobileKeyboard: cd ..; java mobilekeyboard.MobileKeyboard
 

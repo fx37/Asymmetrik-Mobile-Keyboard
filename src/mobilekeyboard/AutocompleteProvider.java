@@ -4,17 +4,17 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class AutocompleteProvider {
-	private Canidate value;
+	private Candidate value;
 	private AutocompleteProvider[] table;
 	public AutocompleteProvider(){
 		table = new AutocompleteProvider[26];
 	}
 	public AutocompleteProvider(String word){
-		value = new Canidate(word);
+		value = new Candidate(word);
 		table = new AutocompleteProvider[26];
 	}
 	private void setValue(String word){
-		value = new Canidate(word);
+		value = new Candidate(word);
 	}
 	//Top level method. Parse input string. Add each word to the history
 	public void train(String passage){
@@ -50,9 +50,9 @@ public class AutocompleteProvider {
 		}
 	}
 	//Top level method. Find autocompleted choices
-	public PriorityQueue<Canidate> getWords(String fragment){
-		PriorityQueue<Canidate> possibilites = 
-	            new PriorityQueue<Canidate>();
+	public PriorityQueue<Candidate> getWords(String fragment){
+		PriorityQueue<Candidate> possibilites = 
+	            new PriorityQueue<Candidate>();
 		AutocompleteProvider iterator = this;
 		for (int a=0; a<fragment.length(); a++){
 			int letter = fragment.charAt(a)-97;//Get the letter number
@@ -69,7 +69,7 @@ public class AutocompleteProvider {
 		return possibilites;
 	}
 	//traverse and add the possibilities to the list
-	private void getValues(AutocompleteProvider t,PriorityQueue<Canidate> p){
+	private void getValues(AutocompleteProvider t,PriorityQueue<Candidate> p){
 		if (t!=null){
 			for (int a = 0; a<t.table.length; a++){
 				if (t.table[a] != null){//there is a value/deeper value
