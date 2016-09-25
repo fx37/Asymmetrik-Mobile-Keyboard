@@ -1,9 +1,9 @@
-MobilrKeyboard
+MobileKeyboard
 By, Winston Tong
 
 This is my implementation of the Mobile Device Keyboard challenged by Asymmetrik.
 
-I used Java Swing to implement the UI.
+I used Java Swing to implement a UI which mimics the autocompletion feature of real mobile devices.
 
 Interface Specification
 
@@ -20,7 +20,7 @@ One modification I've made is returning a PriorityQueue of candidates as opposed
 However, in the context of obtaining autocompletion of a mobile device, we would want to provide only the most X confident canidates. A PriorityQueue would be able to provide these number of canidates effciently. 
 
 I implemented a tree like structure to contain the text history in order to focus on speed.
-As a result, searching for the partial word would take O(N) time where n is the length of the partial word.
+As a result, searching for the partial word would take O(n) time where n is the length of the partial word.
 Returning all of the canidates for a partial word composes of simiply searching all the children with values of the partial word.
 
 The program can be run through the jar file.
@@ -33,3 +33,4 @@ To compile and run the code yourself:
 
 Future Improvements:
 Storing using an ordered map as opposed to the 26 character array would improve efficiency and space usage.
+Allow for selecting a canidate to auto complete the word.
