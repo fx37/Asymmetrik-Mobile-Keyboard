@@ -33,4 +33,5 @@ To compile and run the code yourself:
 
 Future Improvements:
 Storing using an ordered map as opposed to the 26 character array would improve efficiency and space usage.
+Currently the system does not handle contractions: the ' symbol. Using an ordered map would solve this issue.
 Allow for selecting a canidate to auto complete the word.

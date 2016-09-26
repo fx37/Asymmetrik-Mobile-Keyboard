@@ -12,6 +12,7 @@ import javax.swing.event.DocumentListener;
 public class MobileKeyboard {
 	private AutocompleteProvider history;
 	
+	//Create UI
     private void createAndShowUI() {
         final JFrame frame = new JFrame("VirtualKeyboard");
         frame.setSize(600,600);
@@ -24,9 +25,10 @@ public class MobileKeyboard {
         frame.setVisible(true);
     }
 
+    //Fill the frame. Add respective action listeners
     private void initComponents(JFrame frame) {
-    	JTextField input = new JTextField(20);
-        JTextArea historyText = new JTextArea(20,20);
+    	JTextField input = new JTextField(50);
+        JTextArea historyText = new JTextArea(50,50);
         JButton submit = new JButton("Submit");
         JPanel topPanel = new JPanel();
         JPanel results = new JPanel();
@@ -38,6 +40,7 @@ public class MobileKeyboard {
 
         input.getDocument().addDocumentListener(new DocumentListener() {
             @Override
+            //A character is added to the input. Provide autocompletion
             public void insertUpdate(DocumentEvent de) {
             	String in = input.getText().toLowerCase();
             	String[] words= in.split("[^a-z']+");
@@ -45,12 +48,12 @@ public class MobileKeyboard {
             	if (in.length()!=0 && in.charAt(in.length()-1)>='a' && in.charAt(in.length()-1)<='z'){//make sure we start on an alpha
             		PriorityQueue<Candidate> suggestions;
             		//System.out.println("Look for: "+words[words.length-1]);
-            		suggestions = history.getWords(words[words.length-1]);
+            		suggestions = history.getWords(words[words.length-1]); //Get suggestions
             		if (suggestions!=null){
-            			results.removeAll();
+            			results.removeAll();//Remove old suggestions
             			while(suggestions.size()!=0){
             				//System.out.println("I SUGGEST:" +t.toString());
-                        	//historyText.setText(input.getText());
+            				//Add suggestions to the GUI
             				results.add(new JLabel(suggestions.remove().toString(),JLabel.CENTER));
             			}
             			frame.pack();
@@ -67,6 +70,7 @@ public class MobileKeyboard {
             }
 
             @Override
+          //A key is removed. Reobtain suggestions for new word
             public void removeUpdate(DocumentEvent de) {
             	insertUpdate(de);
             }
@@ -108,6 +112,7 @@ public class MobileKeyboard {
         frame.getContentPane().add(historyText, BorderLayout.SOUTH);
     }
     
+    //Main
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
